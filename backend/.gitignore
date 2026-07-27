@@ -1,0 +1,17 @@
+# Environment
+.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Uploaded report images (dev-local storage; not source-controlled)
+uploads/*
+!uploads/.gitkeep
+
+# Editor
+.vscode/*
+.idea/
+.DS_Store

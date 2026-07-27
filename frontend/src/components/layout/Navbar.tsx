@@ -8,9 +8,13 @@ export default function Navbar() {
 
                 <div className="flex items-center gap-3">
 
-                    <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-white font-bold">
-                        B
-                    </div>
+<div className="flex items-center justify-center">
+  <img
+    src="/images/logo.png"
+    alt="Beacon AI Logo"
+    className="h-10 w-auto"
+  />
+</div>
 
                     <div>
 
@@ -28,10 +32,10 @@ export default function Navbar() {
 
                 <nav className="hidden lg:flex gap-10">
 
-                    <a href="#">Features</a>
-                    <a href="#">Community</a>
-                    <a href="#">Map</a>
-                    <a href="#">About</a>
+                    <a href="/home/features">Features</a>
+                    <a href="/home/community">Community</a>
+                    <a href="/home/map">Map</a>
+                    <a href="/home/about">About</a>
 
                 </nav>
 
