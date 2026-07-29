@@ -65,6 +65,7 @@ async def create_report(
 def list_reports(
     category: Optional[IncidentCategory] = None,
     status: Optional[ReportStatus] = None,
+    user_id: Optional[int] = None,
     min_lat: Optional[float] = None,
     max_lat: Optional[float] = None,
     min_lng: Optional[float] = None,
@@ -76,7 +77,8 @@ def list_reports(
     """
     Public feed for the live map. Supports an optional bounding box
     (min_lat/max_lat/min_lng/max_lng) so the frontend only fetches
-    reports within the current viewport instead of the whole table.
+    reports within the current viewport instead of the whole table,
+    and an optional user_id filter for a "my reports" view.
     """
 
     query = db.query(Report)
@@ -86,6 +88,9 @@ def list_reports(
 
     if status is not None:
         query = query.filter(Report.status == status)
+
+    if user_id is not None:
+        query = query.filter(Report.user_id == user_id)
 
     if min_lat is not None:
         query = query.filter(Report.latitude >= min_lat)
