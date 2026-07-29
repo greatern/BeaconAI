@@ -1,4 +1,4 @@
-# 🚨 Beacon AI
+# Beacon AI
 
 > **The Waze for Community Intelligence**
 
@@ -8,19 +8,19 @@ Instead of waiting for problems to escalate, Beacon AI enables communities to id
 
 ---
 
-## 🌍 Why Beacon AI?
+## Why Beacon AI?
 
 South Africans face daily challenges such as:
 
-- 🚧 Potholes
-- ⚡ Power outages
-- 💧 Water leaks
-- 🌊 Flooding
-- 🚦 Broken traffic lights
-- 🗑 Illegal dumping
-- 🚔 Crime hotspots
-- 🌳 Fallen trees
-- 🚑 Road accidents
+-  Potholes
+-  Power outages
+-  Water leaks
+-  Flooding
+-  Broken traffic lights
+-  Illegal dumping
+-  Crime hotspots
+-  Fallen trees
+-  Road accidents
 
 Most reporting platforms are reactive, fragmented, or municipality-specific.
 
@@ -28,9 +28,9 @@ Beacon AI aims to become a citizen-first platform that combines community report
 
 ---
 
-# ✨ Features
+#  Features
 
-## 📍 Community Incident Reporting
+##  Community Incident Reporting
 
 Users can report incidents including:
 
@@ -54,7 +54,7 @@ Each report contains:
 
 ---
 
-## 🧠 AI-Powered Analysis
+##  AI-Powered Analysis
 
 Beacon AI integrates multiple AI technologies:
 
@@ -74,7 +74,7 @@ AI automatically:
 
 ---
 
-## 📊 Analytics Dashboard
+##  Analytics Dashboard
 
 Interactive dashboards provide insights such as:
 
@@ -88,7 +88,7 @@ Interactive dashboards provide insights such as:
 
 ---
 
-## 🗺️ Interactive Community Map
+##  Interactive Community Map
 
 An interactive GIS-powered map displaying:
 
@@ -100,7 +100,7 @@ An interactive GIS-powered map displaying:
 
 ---
 
-## 🔔 Smart Notifications
+##  Smart Notifications
 
 Personalized alerts based on:
 
@@ -112,7 +112,7 @@ Personalized alerts based on:
 
 ---
 
-# 🚀 Machine Learning Pipeline
+#  Machine Learning Pipeline
 
 Citizen uploads image
 
@@ -146,7 +146,7 @@ Notify nearby users
 
 ---
 
-# 🏗️ System Architecture
+#  System Architecture
 
 ```
                    React + TypeScript
@@ -176,7 +176,7 @@ Notify nearby users
 
 ---
 
-# 💻 Tech Stack
+#  Tech Stack
 
 ## Frontend
 
@@ -243,7 +243,7 @@ Notify nearby users
 
 ---
 
-# 🧠 Planned AI Features
+#  Planned AI Features
 
 - AI Incident Classification
 - Computer Vision Image Detection
@@ -258,7 +258,7 @@ Notify nearby users
 
 ---
 
-# 📈 Data Analytics Features
+#  Data Analytics Features
 
 - Heatmaps
 - Time-Series Analysis
@@ -270,14 +270,13 @@ Notify nearby users
 
 ---
 
-# 🎯 Vision
-
+#  Vision
 Beacon AI aims to become the leading AI-powered community intelligence platform in South Africa.
 
 By combining citizen participation with artificial intelligence, geospatial analytics, and predictive modelling, Beacon AI empowers communities with real-time insights that improve awareness, safety, and decision-making.
 
 
-# ⭐ Future Scope
+#  Future Scope
 
 Beacon AI is designed to demonstrate expertise in:
 
