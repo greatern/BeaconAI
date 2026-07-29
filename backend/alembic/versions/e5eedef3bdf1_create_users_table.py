@@ -38,7 +38,7 @@ def upgrade() -> None:
             server_default=sa.func.now(),
         ),
     )
-    op.create_index(op.f("ix_users_id"), "users", ["id"], unique=False)
+   
     op.create_unique_constraint("uq_users_email", "users", ["email"])
 
 

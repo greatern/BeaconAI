@@ -18,6 +18,20 @@ export const REPORT_STATUSES = ["pending", "verified", "resolved", "rejected"] a
 
 export type ReportStatus = (typeof REPORT_STATUSES)[number];
 
+export const STATUS_LABELS: Record<ReportStatus, string> = {
+  pending: "Pending",
+  verified: "Verified",
+  resolved: "Resolved",
+  rejected: "Rejected",
+};
+
+export const STATUS_STYLES: Record<ReportStatus, string> = {
+  pending: "bg-warning/10 text-warning",
+  verified: "bg-success/10 text-success",
+  resolved: "bg-stone-200 text-stone-600",
+  rejected: "bg-danger/10 text-danger",
+};
+
 export const CATEGORY_LABELS: Record<IncidentCategory, string> = {
   pothole: "Pothole",
   water_leak: "Water Leak",
@@ -64,6 +78,7 @@ export interface CreateReportPayload {
 export interface ReportListFilters {
   category?: IncidentCategory;
   status?: ReportStatus;
+  user_id?: number;
   min_lat?: number;
   max_lat?: number;
   min_lng?: number;
@@ -71,3 +86,4 @@ export interface ReportListFilters {
   limit?: number;
   offset?: number;
 }
+

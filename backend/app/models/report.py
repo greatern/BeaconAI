@@ -14,6 +14,9 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
 from app.db.database import Base
+def _enum_values(enum_cls):
+    return [member.value for member in enum_cls]
+
 
 
 class IncidentCategory(str, enum.Enum):
@@ -45,8 +48,11 @@ class Report(Base):
 
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
 
-    category = Column(SAEnum(IncidentCategory), nullable=False, index=True)
-
+    category = Column(
+        SAEnum(IncidentCategory, values_callable=_enum_values, name="incidentcategory"),
+        nullable=False,
+        index=True,
+    )
     description = Column(Text, nullable=True)
 
     image_path = Column(String, nullable=True)
@@ -57,8 +63,12 @@ class Report(Base):
 
     address = Column(String, nullable=True)
 
-    status = Column(SAEnum(ReportStatus), nullable=False, default=ReportStatus.PENDING, server_default=ReportStatus.PENDING.value)
-
+    status = Column(
+        SAEnum(ReportStatus, values_callable=_enum_values, name="reportstatus"),
+        nullable=False,
+        default=ReportStatus.PENDING,
+        server_default=ReportStatus.PENDING.value,
+    )
     # --- Populated by the AI pipeline later; nullable until then ---
     ai_summary = Column(Text, nullable=True)
 

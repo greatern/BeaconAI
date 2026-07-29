@@ -44,10 +44,6 @@ report_status = sa.Enum(
 
 def upgrade() -> None:
     """Upgrade schema."""
-    bind = op.get_bind()
-    incident_category.create(bind, checkfirst=True)
-    report_status.create(bind, checkfirst=True)
-
     op.create_table(
         "reports",
         sa.Column("id", sa.Integer(), primary_key=True, index=True),
@@ -83,7 +79,7 @@ def upgrade() -> None:
         ),
     )
 
-    op.create_index(op.f("ix_reports_id"), "reports", ["id"], unique=False)
+    
     op.create_index(op.f("ix_reports_user_id"), "reports", ["user_id"], unique=False)
     op.create_index(op.f("ix_reports_category"), "reports", ["category"], unique=False)
     op.create_index(op.f("ix_reports_latitude"), "reports", ["latitude"], unique=False)
