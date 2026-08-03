@@ -1,34 +1,56 @@
-export default function DailyBrief(){
+import { useAllReports } from "../../reports/hooks";
+import { CATEGORY_LABELS } from "../../reports/types";
+import type { IncidentCategory } from "../../reports/types";
 
-return(
+export default function DailyBrief() {
+  const { data, isLoading } = useAllReports();
 
-<div className="bg-white rounded-3xl p-8">
+  const reports = data?.reports ?? [];
 
-<h2 className="text-2xl font-bold">
+  const oneDayAgo = Date.now() - 24 * 60 * 60 * 1000;
+  const last24h = reports.filter((r) => new Date(r.created_at).getTime() >= oneDayAgo);
 
-Today's AI Brief
+  const counts = last24h.reduce<Partial<Record<IncidentCategory, number>>>((acc, r) => {
+    acc[r.category] = (acc[r.category] ?? 0) + 1;
+    return acc;
+  }, {});
 
-</h2>
+  const topCategory = (Object.entries(counts) as [IncidentCategory, number][]).sort(
+    (a, b) => b[1] - a[1],
+  )[0];
 
-<p className="mt-6 leading-8">
+  const pending = reports.filter((r) => r.status === "pending").length;
 
-Power instability has increased by
-12% across Gauteng over the last
-24 hours.
+  return (
+    <div className="bg-white rounded-3xl p-8">
+      <h2 className="text-2xl font-bold">Community Brief</h2>
 
-Heavy rainfall is expected in
-KwaZulu-Natal.
+      {isLoading ? (
+        <p className="mt-6 text-stone-400">Loading...</p>
+      ) : (
+        <div className="mt-6 space-y-3 leading-7 text-stone-700">
+          <p>
+            <span className="font-semibold">{last24h.length}</span> report
+            {last24h.length === 1 ? "" : "s"} submitted in the last 24 hours.
+          </p>
 
-Morning traffic around Johannesburg
-is predicted to be above average.
+          {topCategory && (
+            <p>
+              Most reported issue: <span className="font-semibold">{CATEGORY_LABELS[topCategory[0]]}</span>{" "}
+              ({topCategory[1]} report{topCategory[1] === 1 ? "" : "s"}).
+            </p>
+          )}
 
-No severe water disruptions are
-currently forecast.
+          <p>
+            <span className="font-semibold">{pending}</span> report{pending === 1 ? "" : "s"} still
+            awaiting review community-wide.
+          </p>
 
-</p>
-
-</div>
-
-)
-
+          <p className="text-sm text-stone-400 pt-2">
+            AI-generated summaries and severity scoring are coming soon.
+          </p>
+        </div>
+      )}
+    </div>
+  );
 }

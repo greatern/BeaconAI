@@ -5,6 +5,7 @@ import { z } from "zod";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import type { Location } from "react-router-dom";
 import { isAxiosError } from "axios";
+import { Loader2, Lock, Mail } from "lucide-react";
 
 import { useAuth } from "../../context/AuthContext";
 
@@ -46,50 +47,63 @@ export default function Login() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-2">Welcome back</h1>
+      <h1 className="text-3xl font-bold mb-2">Welcome back</h1>
       <p className="text-stone-500 mb-8">Sign in to your Beacon AI account.</p>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         <div>
           <label className="block text-sm font-medium mb-1.5">Email</label>
-          <input
-            type="email"
-            autoComplete="email"
-            className="w-full rounded-xl border border-stone-200 px-4 py-2.5 outline-none focus:border-primary"
-            {...registerField("email")}
-          />
+          <div className="relative">
+            <Mail size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400" />
+            <input
+              type="email"
+              autoComplete="email"
+              placeholder="you@example.com"
+              className="w-full rounded-xl border border-stone-200 pl-11 pr-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10"
+              {...registerField("email")}
+            />
+          </div>
           {errors.email && (
-            <p className="text-danger text-sm mt-1">{errors.email.message}</p>
+            <p className="text-danger text-sm mt-1.5">{errors.email.message}</p>
           )}
         </div>
 
         <div>
           <label className="block text-sm font-medium mb-1.5">Password</label>
-          <input
-            type="password"
-            autoComplete="current-password"
-            className="w-full rounded-xl border border-stone-200 px-4 py-2.5 outline-none focus:border-primary"
-            {...registerField("password")}
-          />
+          <div className="relative">
+            <Lock size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400" />
+            <input
+              type="password"
+              autoComplete="current-password"
+              placeholder="••••••••"
+              className="w-full rounded-xl border border-stone-200 pl-11 pr-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10"
+              {...registerField("password")}
+            />
+          </div>
           {errors.password && (
-            <p className="text-danger text-sm mt-1">{errors.password.message}</p>
+            <p className="text-danger text-sm mt-1.5">{errors.password.message}</p>
           )}
         </div>
 
-        {formError && <p className="text-danger text-sm">{formError}</p>}
+        {formError && (
+          <p className="text-danger text-sm bg-danger/5 border border-danger/10 rounded-lg px-3 py-2">
+            {formError}
+          </p>
+        )}
 
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full bg-primary text-white rounded-xl py-3 font-medium disabled:opacity-60"
+          className="w-full flex items-center justify-center gap-2 bg-primary text-white rounded-xl py-3.5 font-medium transition hover:opacity-90 disabled:opacity-60"
         >
+          {isSubmitting && <Loader2 size={18} className="animate-spin" />}
           {isSubmitting ? "Signing in..." : "Sign in"}
         </button>
       </form>
 
-      <p className="text-center text-stone-500 mt-6">
+      <p className="text-center text-stone-500 mt-8">
         Don't have an account?{" "}
-        <Link to="/register" className="text-primary font-medium">
+        <Link to="/register" className="text-primary font-semibold">
           Create one
         </Link>
       </p>

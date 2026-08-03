@@ -20,6 +20,8 @@ class ReportResponse(BaseModel):
     status: ReportStatus
     ai_summary: Optional[str] = None
     severity_score: Optional[float] = None
+    ai_category: Optional[IncidentCategory] = None
+    ai_confidence: Optional[float] = None
     created_at: datetime
 
 

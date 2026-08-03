@@ -8,7 +8,8 @@ from app.api.deps import get_current_user
 from app.models.user import User
 from app.models.report import Report, IncidentCategory, ReportStatus
 from app.schemas.report import ReportResponse, ReportListResponse
-from app.services.storage import save_report_image
+from app.services.storage import save_report_image, resolve_image_path
+from app.services.ai.pipeline import run_ai_pipeline
 
 router = APIRouter(prefix="/reports", tags=["Reports"])
 
@@ -26,6 +27,8 @@ def _to_response(report: Report) -> ReportResponse:
         status=report.status,
         ai_summary=report.ai_summary,
         severity_score=report.severity_score,
+        ai_category=report.ai_category,
+        ai_confidence=report.ai_confidence,
         created_at=report.created_at,
     )
 
@@ -55,6 +58,25 @@ async def create_report(
     )
 
     db.add(report)
+    db.commit()
+    db.refresh(report)
+
+    # AI enrichment runs inline for now (see pipeline.py docstring for why,
+    # and the natural upgrade path to a background task queue). Each step
+    # inside is independently fault-tolerant, so a report is never lost or
+    # left half-created if a model fails to load.
+    result = run_ai_pipeline(
+        category=category,
+        description=description,
+        address=address,
+        image_path=resolve_image_path(image_path) if image_path else None,
+    )
+
+    report.severity_score = result.severity_score
+    report.ai_summary = result.ai_summary
+    report.ai_category = result.ai_category
+    report.ai_confidence = result.ai_confidence
+
     db.commit()
     db.refresh(report)
 

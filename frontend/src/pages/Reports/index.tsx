@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import { Loader2, MapPin, PlusCircle } from "lucide-react";
+import { Loader2, MapPin, PlusCircle, TriangleAlert } from "lucide-react";
 
 import { useAuth } from "../../context/AuthContext";
 import { listReports } from "../../features/reports/api";
@@ -13,6 +13,12 @@ import {
   type IncidentCategory,
 } from "../../features/reports/types";
 import { resolveMediaUrl } from "../../lib/api";
+
+function severityStyle(score: number) {
+  if (score >= 65) return "bg-danger/10 text-danger";
+  if (score >= 35) return "bg-warning/10 text-warning";
+  return "bg-success/10 text-success";
+}
 
 export default function Reports() {
   const { user } = useAuth();
@@ -124,10 +130,21 @@ export default function Reports() {
                 <p className="text-sm text-stone-500 mt-2 italic">"{report.ai_summary}"</p>
               )}
 
-              <div className="flex items-center gap-4 mt-3 text-xs text-stone-400">
-                <span>{new Date(report.created_at).toLocaleString()}</span>
+              {report.ai_category !== null && report.ai_category !== report.category && (
+                <div className="flex items-center gap-1.5 text-xs text-warning mt-2">
+                  <TriangleAlert size={13} />
+                  AI detected {CATEGORY_LABELS[report.ai_category]}
+                  {report.ai_confidence !== null &&
+                    ` (${Math.round(report.ai_confidence * 100)}% confidence)`}
+                </div>
+              )}
+
+              <div className="flex items-center gap-4 mt-3 text-xs">
+                <span className="text-stone-400">{new Date(report.created_at).toLocaleString()}</span>
                 {report.severity_score !== null && (
-                  <span>Severity: {report.severity_score.toFixed(1)}</span>
+                  <span className={`px-2 py-0.5 rounded-full font-medium ${severityStyle(report.severity_score)}`}>
+                    Severity {Math.round(report.severity_score)}/100
+                  </span>
                 )}
               </div>
             </div>

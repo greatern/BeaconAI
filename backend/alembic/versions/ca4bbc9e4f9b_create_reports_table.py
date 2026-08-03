@@ -17,7 +17,6 @@ down_revision: Union[str, Sequence[str], None] = 'e5eedef3bdf1'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
-
 incident_category = sa.Enum(
     "pothole",
     "water_leak",
@@ -79,7 +78,6 @@ def upgrade() -> None:
         ),
     )
 
-    
     op.create_index(op.f("ix_reports_user_id"), "reports", ["user_id"], unique=False)
     op.create_index(op.f("ix_reports_category"), "reports", ["category"], unique=False)
     op.create_index(op.f("ix_reports_latitude"), "reports", ["latitude"], unique=False)
@@ -92,7 +90,6 @@ def downgrade() -> None:
     op.drop_index(op.f("ix_reports_latitude"), table_name="reports")
     op.drop_index(op.f("ix_reports_category"), table_name="reports")
     op.drop_index(op.f("ix_reports_user_id"), table_name="reports")
-    op.drop_index(op.f("ix_reports_id"), table_name="reports")
     op.drop_table("reports")
 
     bind = op.get_bind()

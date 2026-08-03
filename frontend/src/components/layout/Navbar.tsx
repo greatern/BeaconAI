@@ -1,4 +1,5 @@
 import { Bell, Menu } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
     return (
@@ -12,7 +13,7 @@ export default function Navbar() {
   <img
     src="/images/logo.png"
     alt="Beacon AI Logo"
-    className="h-10 w-auto"
+    className="h-10 w-auto rounded-full"
   />
 </div>
 
@@ -41,13 +42,17 @@ export default function Navbar() {
 
                 <div className="flex items-center gap-4">
 
-                    <button className="p-2 rounded-full hover:bg-stone-200">
-                        <Bell size={18} />
-                    </button>
+                    <Link to="/login" className="hidden sm:inline-block font-medium hover:text-primary">
+                        Log in
+                    </Link>
 
-                    <button className="bg-primary text-white rounded-full px-6 py-3">
+                    <Link
+                        to="/register"
+                        className="bg-primary text-secondary rounded-full px-6 py-3 hover:bg-accent/90 transition"
+                        style={{ color: "oklch(68.364% 0.14351 73.097 / 0.8)" }}
+                    >
                         Get Started
-                    </button>
+                    </Link>
 
                     <button className="lg:hidden">
                         <Menu />

@@ -56,3 +56,12 @@ async def save_report_image(file: UploadFile) -> str:
     destination.write_bytes(contents)
 
     return f"{settings.UPLOAD_DIR}/{filename}"
+
+
+def resolve_image_path(relative_path: str) -> str:
+    """
+    Turns the relative path stored on a Report (e.g. "uploads/reports/x.jpg")
+    into an absolute filesystem path, safe to hand to image-processing code
+    regardless of the server process's current working directory.
+    """
+    return str(BASE_DIR / relative_path)

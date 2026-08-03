@@ -38,12 +38,10 @@ def upgrade() -> None:
             server_default=sa.func.now(),
         ),
     )
-   
     op.create_unique_constraint("uq_users_email", "users", ["email"])
 
 
 def downgrade() -> None:
     """Downgrade schema."""
     op.drop_constraint("uq_users_email", "users", type_="unique")
-    op.drop_index(op.f("ix_users_id"), table_name="users")
     op.drop_table("users")

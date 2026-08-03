@@ -19,5 +19,18 @@ pydantic-settings==2.7.1
 email-validator==2.2.0
 python-dotenv==1.0.1
 
-# --- Images (report uploads, future CV pipeline) ---
+# --- Images (report uploads, CV pipeline) ---
 Pillow==12.3.0
+
+# --- AI pipeline: severity scoring (scikit-learn, local, no external calls) ---
+scikit-learn==1.9.0
+pandas==3.0.5
+joblib==1.5.3
+
+# --- AI pipeline: image classification + summary generation ---
+# First run downloads model weights from Hugging Face (~900MB total,
+# one-time, then cached locally). Needs outbound internet access to
+# huggingface.co during that first run only.
+torch==2.13.0
+torchvision==0.28.0
+transformers==5.14.1

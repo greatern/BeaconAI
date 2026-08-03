@@ -58,6 +58,8 @@ export interface Report {
   status: ReportStatus;
   ai_summary: string | null;
   severity_score: number | null;
+  ai_category: IncidentCategory | null;
+  ai_confidence: number | null;
   created_at: string;
 }
 

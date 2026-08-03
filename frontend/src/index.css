@@ -13,9 +13,9 @@
 
   --primary: oklch(0.205 0 0); /* Burnt Clay */
   --secondary: oklch(0.97 0 0); /* African Gold */
-  --accent: oklch(0.97 0 0); /* Slate Teal */
-
-  --text: #243447;
+  --accent: oklch(68.364% 0.14351 73.097); /* Slate Teal  #243447; */
+  --accet-soft : oklch(68.364% 0.14351 73.097 / 0.75);
+  --text:  #243447;
   --text-muted: #5f6b76;
 
   --success: #5b6b3a;
