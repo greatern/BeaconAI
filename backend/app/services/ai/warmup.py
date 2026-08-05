@@ -20,7 +20,16 @@ summaries will simply stay empty on each report, see image_classifier.py
 and summarizer.py for the fallback behavior).
 """
 
+import os
 import sys
+
+# IMPORTANT: set this before importing image_classifier/summarizer.
+# Those modules set an 8-second timeout meant to make a failed *live*
+# report submission fail fast rather than hang. That's too short for
+# an actual first-time download of a few hundred MB - this script
+# needs real patience instead, since it's meant to be run once, not
+# during a user-facing request.
+os.environ["HF_HUB_DOWNLOAD_TIMEOUT"] = "120"
 
 
 def main():

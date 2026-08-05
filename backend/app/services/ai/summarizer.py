@@ -50,7 +50,7 @@ _unavailable = False
 def _get_generator():
     from transformers import pipeline
 
-    return pipeline("text2text-generation", model=MODEL_NAME)
+    return pipeline("text-generation", model=MODEL_NAME)
 
 
 def generate_summary(

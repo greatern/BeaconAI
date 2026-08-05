@@ -7,6 +7,8 @@ import { AuthProvider } from "./context/AuthContext";
 import "@fontsource/plus-jakarta-sans";
 import "./index.css";
 import "leaflet/dist/leaflet.css";
+import "react-leaflet-cluster/dist/assets/MarkerCluster.css";
+import "react-leaflet-cluster/dist/assets/MarkerCluster.Default.css";
 
 const queryClient = new QueryClient({
   defaultOptions: {

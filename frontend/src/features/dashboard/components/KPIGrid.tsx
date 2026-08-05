@@ -1,21 +1,37 @@
 import RiskCard from "./RiskCard";
+import { useAllReports } from "../../reports/hooks";
+import { computeHealthIndex, healthIndexLabel } from "../../reports/utils";
 
 export default function KPIGrid() {
+  const { data, isLoading } = useAllReports();
 
-    return (
+  const reports = data?.reports ?? [];
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+  const activeIncidents = reports.filter((r) => r.status === "pending").length;
+  const resolved = reports.filter((r) => r.status === "resolved").length;
 
-            <RiskCard title="Community Score" value="84" colour="green"/>
+  const oneWeekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+  const reportsThisWeek = reports.filter(
+    (r) => new Date(r.created_at).getTime() >= oneWeekAgo,
+  ).length;
 
-            <RiskCard title="Active Incidents" value="26" colour="orange"/>
+  const healthIndex = computeHealthIndex(reports);
+  const healthColour = healthIndex >= 75 ? "green" : healthIndex >= 50 ? "orange" : "red";
 
-            <RiskCard title="AI Confidence" value="94%" colour="blue"/>
+  const display = (value: number) => (isLoading ? "…" : String(value));
 
-            <RiskCard title="Alerts" value="7" colour="red"/>
-
-        </div>
-
-    )
-
+  return (
+    <div className="grid grid-cols-2 lg:grid-cols-5 gap-6">
+      <RiskCard title="Total Reports" value={display(reports.length)} colour="blue" />
+      <RiskCard title="Active Incidents" value={display(activeIncidents)} colour="orange" />
+      <RiskCard title="Reports This Week" value={display(reportsThisWeek)} colour="blue" />
+      <RiskCard title="Resolved" value={display(resolved)} colour="green" />
+      <RiskCard
+        title="Community Health"
+        value={isLoading ? "…" : String(healthIndex)}
+        subtitle={isLoading ? undefined : healthIndexLabel(healthIndex)}
+        colour={healthColour}
+      />
+    </div>
+  );
 }
