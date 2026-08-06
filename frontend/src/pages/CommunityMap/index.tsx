@@ -2,12 +2,13 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
-import { Flame, Loader2, MapPin, Sparkles, TriangleAlert } from "lucide-react";
+import { Copy, Flame, Loader2, MapPin, Sparkles, TriangleAlert } from "lucide-react";
 
 import "../../lib/leafletIcons";
 import HeatmapLayer from "../../components/map/HeatmapLayer";
 import { listReports } from "../../features/reports/api";
 import { CATEGORY_LABELS, STATUS_STYLES } from "../../features/reports/types";
+import { enrichmentPollInterval, isEnriching } from "../../features/reports/utils";
 import { resolveMediaUrl } from "../../lib/api";
 
 const DEFAULT_CENTER: [number, number] = [-26.2041, 28.0473]; // Johannesburg
@@ -26,6 +27,10 @@ export default function CommunityMap() {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["reports", "map"],
     queryFn: () => listReports({ limit: 500 }),
+    // Same reasoning as the dashboard/Reports polling: enrichment now
+    // finishes a few seconds after submission in a background worker,
+    // so keep refetching while any visible report is still pending.
+    refetchInterval: (query) => enrichmentPollInterval(query.state.data?.reports),
   });
 
   const reports = data?.reports ?? [];
@@ -107,6 +112,13 @@ export default function CommunityMap() {
                           </span>
                         </div>
 
+                        {report.is_duplicate && (
+                          <div className="flex items-center gap-1.5 text-xs text-stone-500 bg-stone-100 rounded-full px-2 py-0.5 w-fit">
+                            <Copy size={12} />
+                            Possible duplicate
+                          </div>
+                        )}
+
                         {report.image_url && (
                           <img
                             src={resolveMediaUrl(report.image_url) ?? undefined}
@@ -124,6 +136,13 @@ export default function CommunityMap() {
                         )}
 
                         {report.description && <p className="text-sm">{report.description}</p>}
+
+                        {isEnriching(report) && (
+                          <div className="flex items-center gap-1.5 text-xs text-stone-400">
+                            <Sparkles size={13} className="text-stone-300 shrink-0 animate-pulse" />
+                            AI analyzing...
+                          </div>
+                        )}
 
                         {report.ai_summary && (
                           <div className="flex items-start gap-1.5 text-sm bg-stone-50 rounded-lg px-2.5 py-2">

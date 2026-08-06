@@ -1,7 +1,8 @@
-import { Bell, LogOut, Search } from "lucide-react";
+import { LogOut, Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 import { useAuth } from "../../context/AuthContext";
+import NotificationBell from "./NotificationBell";
 
 export default function Topbar() {
   const { user, logout } = useAuth();
@@ -28,7 +29,7 @@ export default function Topbar() {
 
       <div className="flex items-center gap-5">
 
-        <Bell />
+        <NotificationBell />
 
         {user && (
           <span className="text-sm text-stone-500 hidden sm:inline">

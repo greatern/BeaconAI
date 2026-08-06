@@ -23,6 +23,11 @@ class Settings(BaseSettings):
     # --- Database ---
     DATABASE_URL: str
 
+    # --- Background tasks (Celery + Redis) ---
+    # Hosted Redis (Upstash free tier) - same reasoning as DATABASE_URL
+    # being hosted Postgres: Redis has no official native Windows build.
+    REDIS_URL: str
+
     # --- Auth ---
     JWT_SECRET: str
     JWT_ALGORITHM: str = "HS256"

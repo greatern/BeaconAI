@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import { Loader2, MapPin, PlusCircle, TriangleAlert } from "lucide-react";
+import { Copy, Loader2, MapPin, PlusCircle, Sparkles, TriangleAlert } from "lucide-react";
 
 import { useAuth } from "../../context/AuthContext";
 import { listReports } from "../../features/reports/api";
@@ -12,6 +12,7 @@ import {
   STATUS_STYLES,
   type IncidentCategory,
 } from "../../features/reports/types";
+import { enrichmentPollInterval, isEnriching } from "../../features/reports/utils";
 import { resolveMediaUrl } from "../../lib/api";
 
 function severityStyle(score: number) {
@@ -33,6 +34,11 @@ export default function Reports() {
         limit: 100,
       }),
     enabled: !!user,
+    // AI enrichment now finishes a few seconds after submission via a
+    // background worker - poll while any of this user's reports are
+    // still waiting on it, so a just-submitted report's severity/AI
+    // summary shows up without a manual refresh.
+    refetchInterval: (query) => enrichmentPollInterval(query.state.data?.reports),
   });
 
   const reports = data?.reports ?? [];
@@ -122,12 +128,26 @@ export default function Reports() {
                 </span>
               </div>
 
+              {report.is_duplicate && (
+                <div className="flex items-center gap-1.5 text-xs text-stone-500 bg-stone-100 rounded-full px-2.5 py-1 w-fit mt-2">
+                  <Copy size={13} />
+                  Possible duplicate of an existing report
+                </div>
+              )}
+
               {report.description && (
                 <p className="text-sm text-stone-600 mt-2 line-clamp-2">{report.description}</p>
               )}
 
               {report.ai_summary && (
                 <p className="text-sm text-stone-500 mt-2 italic">"{report.ai_summary}"</p>
+              )}
+
+              {isEnriching(report) && (
+                <div className="flex items-center gap-1.5 text-xs text-stone-400 mt-2">
+                  <Sparkles size={13} className="animate-pulse" />
+                  AI analyzing...
+                </div>
               )}
 
               {report.ai_category !== null && report.ai_category !== report.category && (

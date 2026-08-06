@@ -22,6 +22,8 @@ class ReportResponse(BaseModel):
     severity_score: Optional[float] = None
     ai_category: Optional[IncidentCategory] = None
     ai_confidence: Optional[float] = None
+    is_duplicate: bool = False
+    duplicate_of_id: Optional[int] = None
     created_at: datetime
 
 

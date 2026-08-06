@@ -14,10 +14,12 @@ a real, locally-computed severity score rather than failing the whole
 report submission. See image_classifier.py and summarizer.py for their
 individual fallback behavior.
 
-This runs synchronously, inline with POST /reports, for simplicity.
-Once report volume grows, this is the natural place to hand off to a
-background task queue (Celery + Redis, already on the project roadmap)
-instead of blocking the request.
+This function itself is synchronous and has no opinion about who calls
+it. It now runs inside a Celery worker process (see
+app/tasks/ai_tasks.py) rather than inline with POST /reports, so a
+slow model load or a Hugging Face outage no longer blocks the request -
+but the pipeline logic here didn't need to change at all to make that
+move, which is the point of keeping it decoupled from the caller.
 """
 
 from dataclasses import dataclass

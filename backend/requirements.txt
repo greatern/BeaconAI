@@ -34,3 +34,7 @@ joblib==1.5.3
 torch==2.13.0
 torchvision==0.28.0
 transformers==5.14.1
+
+# --- Background tasks (AI enrichment runs off the request thread) ---
+celery==5.5.1
+redis==5.2.1

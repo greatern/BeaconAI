@@ -7,6 +7,7 @@ from app.core.config import settings
 from app.db.database import Base, engine
 from app.api.v1.auth import router as auth_router
 from app.api.v1.reports import router as reports_router
+from app.api.v1.notifications import router as notifications_router
 from fastapi.middleware.cors import CORSMiddleware
 
 Base.metadata.create_all(bind=engine)
@@ -26,6 +27,7 @@ app.add_middleware(
 
 app.include_router(auth_router)
 app.include_router(reports_router)
+app.include_router(notifications_router)
 
 # Serve uploaded report images 
 uploads_root = Path(__file__).resolve().parent.parent / "uploads"

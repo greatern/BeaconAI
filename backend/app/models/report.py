@@ -6,6 +6,7 @@ from sqlalchemy import (
     String,
     Float,
     Text,
+    Boolean,
     DateTime,
     ForeignKey,
     Enum as SAEnum,
@@ -86,6 +87,24 @@ class Report(Base):
     )
 
     ai_confidence = Column(Float, nullable=True)
+
+    # --- Populated by duplicate detection, alongside the AI pipeline ---
+    # Deliberately separate from `status` (ReportStatus) - a duplicate is
+    # still a real, valid report that a moderator should look at; this is
+    # a hint for them, not an automatic rejection.
+    is_duplicate = Column(Boolean, nullable=False, default=False, server_default="false")
+
+    # Points at the earlier report this one is likely a repeat of. No
+    # ORM relationship exposed for this on purpose (self-referential
+    # relationships add complexity - lazy loading, join direction - that
+    # nothing currently needs; callers that want the other report's
+    # details can fetch it by this id).
+    duplicate_of_id = Column(
+        Integer,
+        ForeignKey("reports.id", ondelete="SET NULL"),
+        nullable=True,
+        index=True,
+    )
 
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 

@@ -60,6 +60,8 @@ export interface Report {
   severity_score: number | null;
   ai_category: IncidentCategory | null;
   ai_confidence: number | null;
+  is_duplicate: boolean;
+  duplicate_of_id: number | null;
   created_at: string;
 }
 
